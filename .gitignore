@@ -1,0 +1,6 @@
+# Ignore binary files from bazel.
+bazel-bin
+.vscode
+bazel-iLQGames
+bazel-out
+bazel-testlogs
