@@ -8,51 +8,28 @@
 
 namespace ilqgames
 {
-  template <typename T>
-  inline constexpr T sgn(T x, std::false_type is_signed)
-  {
-    return T(0) < x;
-  }
 
-  template <typename T>
-  inline constexpr T sgn(T x, std::true_type is_signed)
+  bool LineSegment::Side(const types::Point2d &query) const
   {
-    return (T(0) < x) - (x < T(0));
-  }
-
-  template <typename T>
-  inline constexpr T sgn(T x)
-  {
-    return sgn(x, std::is_signed<T>());
-  }
-
-  template <typename T>
-  inline constexpr T signed_sqrt(T x)
-  {
-    return sgn(x) * std::sqrt(std::abs(x));
-  }
-
-  bool LineSegment::Side(const Eigen::Vector2f &query) const
-  {
-    const Eigen::Vector2f relative_query = query - p1_;
+    const types::Point2d relative_query = query - p1_;
     const float cross_product = relative_query.x() * unit_direction_.y() -
                                 unit_direction_.x() * relative_query.y();
 
     return cross_product > 0.0;
   }
 
-  Eigen::Vector2f LineSegment::ClosestPoint(const Eigen::Vector2f &query, bool *is_endpoint,
-                                            float *signed_squared_distance) const
+  types::Point2d LineSegment::ClosestPoint(const types::Point2d &query, bool *is_endpoint,
+                                           float *signed_squared_distance) const
   {
     // Find query relative to p1.
-    const Eigen::Vector2f relative_query = query - p1_;
+    const types::Point2d relative_query = query - p1_;
 
     // Find dot product and signed length of cross product.
     const float dot_product = relative_query.dot(unit_direction_);
     const float cross_product = relative_query.x() * unit_direction_.y() -
                                 unit_direction_.x() * relative_query.y();
 
-    const float cross_product_sign = sgn(cross_product);
+    const float cross_product_sign = utils::sgn(cross_product);
 
     // Determine closest point. This will either be an endpoint or the interior of
     // the segment.

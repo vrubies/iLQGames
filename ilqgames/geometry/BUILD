@@ -2,7 +2,7 @@ cc_library(
     name = "line_segment",
     hdrs = ["line_segment.h"],
     srcs = ["line_segment.cc"],
-    deps = ["@eigen",
+    deps = ["//ilqgames/utils:defs",
             "@com_google_googletest//:gtest_main"],
 )
 
