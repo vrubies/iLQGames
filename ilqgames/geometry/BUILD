@@ -6,6 +6,13 @@ cc_library(
             "@com_google_googletest//:gtest_main"],
 )
 
+cc_test(
+    name = "line_segment_test",
+    srcs = ["line_segment_test.cc"],
+    deps = ["//ilqgames/geometry:line_segment",
+            "@com_google_googletest//:gtest_main"],
+)
+
 # cc_binary(
 #     name = "hello-world",
 #     srcs = ["hello-world.cc"],

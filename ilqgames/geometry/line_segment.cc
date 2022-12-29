@@ -9,20 +9,20 @@
 namespace ilqgames
 {
 
-  bool LineSegment::Side(const types::Point2d &query) const
+  bool LineSegment::Side(const Point2d &query) const
   {
-    const types::Point2d relative_query = query - p1_;
+    const Point2d relative_query = query - p1_;
     const float cross_product = relative_query.x() * unit_direction_.y() -
                                 unit_direction_.x() * relative_query.y();
 
     return cross_product > 0.0;
   }
 
-  types::Point2d LineSegment::ClosestPoint(const types::Point2d &query, bool *is_endpoint,
-                                           float *signed_squared_distance) const
+  Point2d LineSegment::ClosestPoint(const Point2d &query, bool *is_endpoint,
+                                    float *signed_squared_distance) const
   {
     // Find query relative to p1.
-    const types::Point2d relative_query = query - p1_;
+    const Point2d relative_query = query - p1_;
 
     // Find dot product and signed length of cross product.
     const float dot_product = relative_query.dot(unit_direction_);
@@ -47,7 +47,7 @@ namespace ilqgames
 
       return p1_;
     }
-    else if (dot_product > length_)
+    if (dot_product > length_)
     {
       // Closest point is p2.
       if (is_endpoint)
