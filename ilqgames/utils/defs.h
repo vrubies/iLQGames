@@ -15,6 +15,7 @@ namespace ilqgames
   {
 
     using Point2d = Eigen::Vector2f;
+    using PointList2d = std::vector<Point2d>;
 
   } // namespace types
 
