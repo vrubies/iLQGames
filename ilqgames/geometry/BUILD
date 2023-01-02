@@ -13,6 +13,14 @@ cc_test(
             "@com_google_googletest//:gtest_main"],
 )
 
+cc_library(
+    name = "polyline",
+    hdrs = ["polyline.h"],
+    srcs = ["polyline.cc"],
+    deps = ["//ilqgames/geometry:line_segment",
+            "@com_google_googletest//:gtest_main"],
+)
+
 # cc_binary(
 #     name = "hello-world",
 #     srcs = ["hello-world.cc"],
