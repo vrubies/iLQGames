@@ -26,26 +26,39 @@ namespace ilqgames
     segments_.emplace_back(end_point, point);
   }
 
-  // Point2d Polyline::ClosestPoint(
-  //     const Point2d &query, bool *is_vertex = nullptr,
-  //     LineSegment *segment = nullptr,
-  //     float *signed_squared_distance = nullptr,
-  //     bool *is_endpoint = nullptr)
-  // {
-  //   // Go through segments and find closest one.
-  //   segment = &segments_.front();
-  //   float closest_so_far = std::numeric_limits<float>::infinity();
-  //   std::unique_ptr<float> dist_ptr;
-  //   for (const auto &tmp_segment : segments_)
-  //   {
-  //     *tmp_segment.ClosestPoint(query, is_vertex, dist_ptr);
-  //     if (*dist_ptr < closest_so_far)
-  //     {
-  //       closest_so_far = *dist_ptr;
-  //       segment = &tmp_segment;
-  //     }
-  //   }
+  Point2d Polyline::ClosestPoint(
+      const Point2d &query, bool *is_vertex,
+      LineSegment *segment,
+      float *signed_squared_distance,
+      bool *is_endpoint) const
+  {
+    // Go through segments and find closest one.
+    Point2d closest_point;
+    Point2d current_point;
+    *signed_squared_distance = std::numeric_limits<float>::infinity();
+    // std::unique_ptr<const LineSegment> return_segment;
+    float current_dist;
+    for (auto &tmp_segment : segments_)
+    {
+      current_point = tmp_segment.ClosestPoint(query, is_vertex, &current_dist);
+      if (current_dist < std::abs(*signed_squared_distance))
+      {
+        closest_point = current_point;
+        *signed_squared_distance = current_dist;
+        *segment = tmp_segment;
+      }
+    }
+    // segment = return_segment.get();
 
-  //   if ()
-  // }
+    if (segment == &segments_.back())
+    {
+      *is_endpoint = *is_vertex && closest_point.isApprox(segment->SecondPoint());
+      return closest_point;
+    }
+    if (segment == &segments_.front())
+    {
+      *is_endpoint = *is_vertex && closest_point.isApprox(segment->FirstPoint());
+      return closest_point;
+    }
+  }
 }
