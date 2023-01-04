@@ -1,4 +1,5 @@
 #include "ilqgames/geometry/polyline.h"
+#include <glog/logging.h>
 
 namespace ilqgames
 {
@@ -53,12 +54,38 @@ namespace ilqgames
     if (segment == &segments_.back())
     {
       *is_endpoint = *is_vertex && closest_point.isApprox(segment->SecondPoint());
-      return closest_point;
     }
     if (segment == &segments_.front())
     {
       *is_endpoint = *is_vertex && closest_point.isApprox(segment->FirstPoint());
-      return closest_point;
     }
+    return closest_point;
+  }
+
+  Point2d Polyline::PointAt(
+      float route_pos, bool *is_vertex,
+      LineSegment *segment,
+      bool *is_endpoint) const
+  {
+    // Check if route_pos is longer than polyline.
+    if (route_pos > cumulative_lengths_.back())
+    {
+      LOG(WARNING) << "Route position " << route_pos
+                   << " was off the end of the route. Returning endpoint.";
+      *is_vertex = true;
+      *segment = segments_.back();
+      *is_endpoint = true;
+      return segments_.back().SecondPoint();
+    }
+
+    auto it = std::upper_bound(cumulative_lengths_.begin(),
+                               cumulative_lengths_.end(), route_pos);
+    it--;
+    const size_t idx = std::distance(cumulative_lengths_.begin(), it);
+    *segment = segments_[idx];
+    const float remaining = route_pos - cumulative_lengths_[idx];
+    *is_vertex = remaining < constants::kSmallNumber ||
+                 remaining > segments_[idx].Length();
+    return segments_[idx].FirstPoint() + remaining * segments_[idx].UnitDirection();
   }
 }
