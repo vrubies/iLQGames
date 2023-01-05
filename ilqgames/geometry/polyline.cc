@@ -37,16 +37,17 @@ namespace ilqgames
     Point2d closest_point;
     Point2d current_point;
     *signed_squared_distance = std::numeric_limits<float>::infinity();
-    // std::unique_ptr<const LineSegment> return_segment;
     float current_dist;
+    bool vertex;
     for (auto &tmp_segment : segments_)
     {
-      current_point = tmp_segment.ClosestPoint(query, is_vertex, &current_dist);
+      current_point = tmp_segment.ClosestPoint(query, &vertex, &current_dist);
       if (current_dist < std::abs(*signed_squared_distance))
       {
         closest_point = current_point;
         *signed_squared_distance = current_dist;
         *segment = tmp_segment;
+        *is_vertex = vertex;
       }
     }
     // segment = return_segment.get();
