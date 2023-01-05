@@ -22,6 +22,14 @@ cc_library(
             "@com_github_google_glog//:glog"],
 )
 
+cc_test(
+    name = "polyline_test",
+    srcs = ["polyline_test.cc"],
+    deps = ["//ilqgames/geometry:line_segment",
+            "//ilqgames/geometry:polyline",
+            "@com_google_googletest//:gtest_main"],
+)
+
 # cc_binary(
 #     name = "hello-world",
 #     srcs = ["hello-world.cc"],

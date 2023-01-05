@@ -3,6 +3,8 @@
 // Line segment in 2D.
 //
 ///////////////////////////////////////////////////////////////////////////////
+#ifndef ILQGAMES_GEOMETRY_LINE_SEGMENT2_H
+#define ILQGAMES_GEOMETRY_LINE_SEGMENT2_H
 
 #include "ilqgames/utils/defs.h"
 
@@ -63,3 +65,5 @@ namespace ilqgames
   }; // struct LineSegment2
 
 } // namespace ilqgames
+
+#endif
